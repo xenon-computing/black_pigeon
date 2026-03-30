@@ -1,6 +1,7 @@
 #!/bin/python3
 
 import os
+import subprocess
 
 class Color:
     # Define basic color codes as class variables
@@ -27,8 +28,9 @@ class Color:
     BG_MAGENTA = "\033[45m"
     BG_CYAN = "\033[46m"
     BG_WHITE = "\033[47m"
-    
 
+def colorize(text:str, color):
+    return f"{color}{text}{Color.RESET}"
 
 
 
@@ -51,8 +53,8 @@ def show_banner():
  | |_) | | (_| | (__|   <_____|  __/| | (_| |  __/ (_) | | | |
  |____/|_|\__,_|\___|_|\_\    |_|   |_|\__, |\___|\___/|_| |_|
                                        |___/                  
-   {Color.BOLD}Author : {Color.CYAN}Neurohumar Group
-    {Color.YELLOW}visit {Color.UNDERLINE}{Color.CYAN}https://github.com/neurohumar/black_pigeon.git
+   {Color.BOLD}Author : {Color.CYAN}Xenon Computing
+    {Color.YELLOW}visit {Color.UNDERLINE}{Color.CYAN}https://github.com/xenon-computing/black_pigeon.git
 {Color.RESET}
 """)
 
@@ -65,3 +67,6 @@ def select_files_by_index(files):
 		
 	indexes =list(map(int ,promt.split()))
 	return [files[i] for i in indexes]
+
+def update_tools():
+    subprocess.run(["git","pull"])

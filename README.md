@@ -1,7 +1,9 @@
 # About __*Black Pigeon*__
 
-__*Black Pigeon*__ is a simple python script , responsible for hiding various types of data into __PNG__ or __JPEG__ image file to ensure security and privacy.
-It typically compresses files to be hidden , with popular LZMA algorithm to reduce size . Besides it uses cryptographic algorithm to encrypt data during hiding process
+__*Black Pigeon*__ is a simple Python script , responsible for hiding various types of data into __PNG__ or __JPEG__ image file to ensure security and privacy.
+It typically compresses files to be hidden using popular LZMA algorithm to reduce size . Besides it uses cryptographic algorithm to encrypt data during hiding process
+
+Make sure __Python3__ is installed on your syatem to use this tools.
 
 # Supported Files
 1. PNG (.png)
@@ -21,7 +23,7 @@ It typically compresses files to be hidden , with popular LZMA algorithm to redu
 
 ## Step 1 :
 ```sh
-git clone https://github.com/neurohumar/black_pigeon.git
+git clone https://github.com/xenon-computing/black_pigeon.git
 ```
 
 ## Step 2 :
@@ -39,8 +41,13 @@ For Linux/MacOS
 ```sh
 pip3 install -r requirements.txt
 ```
+For Termux
+```sh
+pkg install python-cryptography
+```
+
 ## Step 4 (Optional):
-For Linux :
+For Linux / Termux:
 ```sh
 chmod +x main.py
 ```
@@ -51,7 +58,7 @@ chmod +x main.py
 3. Copy the path of the directory.
 4. run ```main.py ``` and select a option mentioned on the menu in the console as your need.
 5. To obscure the directory, select option 1 . Then enter necessary information required by the script and don't forget to set a password for better security .
-7. For extracting contents from a image where you have obscured info through __Black Pigeon__ , Select correct option from the menu and enter the password key that you set earlier during the encryption process.
+7. For extracting contents from an image where you have obscured info through __Black Pigeon__ , Select correct option from the menu and enter the password key that you set earlier during the encryption process.
 8. provide a output path to save extracted information.
 
 __*All types of path mentioned earlier have to be absolute, not relative*__

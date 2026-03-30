@@ -5,8 +5,9 @@ import zipfile
 import os
 from cryptography.fernet import Fernet, InvalidToken
 from hashlib import md5
-from time import strftime
+##from time import strftime
 from base64 import urlsafe_b64encode
+from pkg.config import TrailingMarker, INTER_REP_NAME, DEF_OUTPUT_NAME, KEEP_SOURCE_COPY
 
 
 class Authentication:
@@ -21,7 +22,11 @@ class Authentication:
         self.password: str = password
 
     def get_hash(self):
-        return urlsafe_b64encode(md5(self.password.encode()).hexdigest().encode())
+        return urlsafe_b64encode(
+                md5(
+                    self.password.encode()
+                    ).hexdigest().encode()
+                )
 
 
 class Locker:
@@ -31,7 +36,11 @@ class Locker:
     copy_files_to_archive:bool, files_to_compress:list
     """
 
-    def __init__(self, zipfilename="secret.zip", key=None, copy=True, *files):
+    def __init__(self, 
+                 zipfilename=INTER_REP_NAME,
+                 key=None,
+                 copy=KEEP_SOURCE_COPY,
+                 *files):
         self.zipfile_name = zipfilename
         self.key = key
         self.files = files
@@ -81,10 +90,10 @@ class Unlocker:
     parameters : zipfile_name , encrypton_key , default_output_path
     """
 
-    def __init__(self, zipfile_name="secret.zip",
+    def __init__(self, zipfile_name=INTER_REP_NAME,
                  key=None,
-                 default_output_path=f"secret_{strftime('%s')}",
-                 output_path="/"
+                 default_output_path=DEF_OUTPUT_NAME,
+                 output_path=None
                  ):
         self.zipfile_name = zipfile_name
         self.key = key
@@ -107,7 +116,10 @@ class Unlocker:
                 with open(file_path, "wb") as fc:
                     fc.write(content)
             except InvalidToken:
-                print("\003[1;31mIncorrect password!\033[0m")
+                self.status = False
+                return
+
+        self.status = True
 
     def decompress(self):
         try:
@@ -146,24 +158,23 @@ class Injector:
         return None
 
     def inject_to_jpeg(self):
-        EOI_marker = "ffd9"
+        #EOI_marker = "ffd9"
         with open(self.container, "rb+") as cf, open(self.payload, "rb") as pf:
-            index = cf.read().index(bytes.fromhex(EOI_marker))
-            cf.seek(index + len(EOI_marker))
+            index = cf.read().index(bytes.fromhex(TrailingMarker.Exif_marker))
+            cf.seek(index + len(TrailingMarker.Exif_marker))
             cf.write(pf.read())
 
     def inject_to_png(self):
-        EOI_marker = "0000000049454E44AE426082"
+        #EOI_marker = "0000000049454E44AE426082"
         with open(self.container, "rb+") as cf, open(self.payload, "rb") as pf:
-            index = cf.read().index(bytes.fromhex(EOI_marker))
-            cf.seek(index + len(EOI_marker))
+            index = cf.read().index(bytes.fromhex(TrailingMarker.EOI_marker))
+            cf.seek(index + len(TrailingMarker.EOI_marker))
             cf.write(pf.read())
 
 
 class Extractor:
     """
-    Class for extracting hidden media files from the container_image
-
+    Class for extracting hidden media files from the container_image    
     parameters : container_image , output_file_path
     """
 
@@ -179,19 +190,42 @@ class Extractor:
         return self.container.split(".")[-1]
 
     def extract_from_png(self):
-        EOI_marker = "0000000049454E44AE426082"
+        #EOI_marker = "0000000049454E44AE426082"
         with open(self.container, "rb+") as f, open(self.output_path, "wb"
                                                     ) as fc:
-            index = f.read().index(bytes.fromhex(EOI_marker))
+            index = f.read().index(bytes.fromhex(TrailingMarker.EOI_marker))
             f.seek(index + 12)
             fc.write(f.read())
             f.truncate()
 
     def extract_from_jpeg(self):
-        EOI_marker = "ffd9"
+        #EOI_marker = "ffd9"
         with open(self.container, "rb+") as f, open(self.output_path, "wb"
                                                     ) as fc:
-            index = f.read().index(bytes.fromhex(EOI_marker))
+            index = f.read().index(bytes.fromhex(TrailingMarker.Exif_marker))
             f.seek(index + 4)
             fc.write(f.read())
             f.truncate()
+
+    
+class PolyglotWrapper:
+    """
+    Its a helper class to wrap the container_image
+    using an uncompressable archive to reduce the risk
+    of stripping
+    """
+
+    def __init__(self, payload, wrapper_format):
+        self.payload = payload
+        self.extension = wrapper_format
+        self.name = payload.split(".")[:-1]
+        self.fname = self.name + self.extension
+            
+    def conceal(self):
+        """
+        Simple implementation of polyglot wrapping
+
+        It can be improved by using specific file structure
+        to evade from suspicion
+        """
+        os.rename(self.payload, self.name + extension)
