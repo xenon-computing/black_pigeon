@@ -70,3 +70,6 @@ def select_files_by_index(files):
 
 def update_tools():
     subprocess.run(["git","pull"])
+
+def is_file_path(path):
+    return os.path.isfile(path)

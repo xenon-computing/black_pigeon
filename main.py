@@ -1,20 +1,20 @@
 #! /bin/python3
 
 from pkg.pigeon import Locker, Unlocker, Injector, Extractor, Authentication, PolyglotWrapper
-from pkg.util import discover_all_files, show_banner, select_files_by_index, Color, colorize, update_tools
+from pkg.util import discover_all_files, show_banner, select_files_by_index, Color, colorize, update_tools, is_file_path
 from pkg.config import INTER_REP_NAME, DEF_OUTPUT_PATH, DEF_PASSWORD 
 import sys, os
 
 
 show_banner()
-print(f"""{Color.BLUE}SELECT A OPTION :
+print(colorize(f"""
+SELECT AN OPTION :
+    [1]. Hide files 
+    [2]. Extract files
+    [3].Update Script
+    [4].exit
 
-		{Color.BOLD}[1]. Hide files
-		[2]. Extract files
-		[3].Update Script
-		[4].exit
-        {Color.RESET}
-{Color.RESET}""")
+""",Color.BLUE+Color.BOLD),)
 
 try:
     option = int(input("\n>"))
@@ -27,9 +27,9 @@ if option == 1 or option == 2:
             {Color.MAGENTA}COVER_IMAGE is a JPEG or PNG image where the file(s) will be obscured or extracted
             {Color.YELLOW}{Color.BOLD}
             Enter the path of the cover image :
-            >{Color.RESET}"""
+            >{Color.RESET} """
                         )
-    if not cover_image:
+    if not is_file_path(cover_image):
         print(f"{Color.RED}{Color.BOLD}Cover Image not found!{Color.RESET}")
         sys.exit()
 
@@ -39,7 +39,7 @@ if option == 1 or option == 2:
             No other files should keep in the DIRECTORY not to be hidden.
             {Color.YELLOW}{Color.BOLD}
             Enter the directory path to be hidden :
-            >{Color.RESET}"""
+            > {Color.RESET}"""
                      )
         if not dirs:
             print(f"{Color.RED}{Color.BOLD}Directory not found!{Color.RESET}")
@@ -62,10 +62,10 @@ if option == 1 or option == 2:
         """)
         files = select_files_by_index(all_files)
         password = input(f"""
-            {Color.MAGENTA}PASSWORD is strong feature to save obscured file(s) from leaking to the imposter(s)
+            {Color.MAGENTA}PASSWORD is strong feature to save obscured file(s) from leaking to imposter(s)
             {Color.YELLOW}{Color.BOLD}
             Enter a strong password (at least 8 characters) : 
-            >{Color.RESET}""")
+            >{Color.RESET} """)
         if not password:
             print(f"{Color.RED}{Color.BOLD}Password not found!{Color.RESET}")
             print(colorize("Using default password!", Color.YELLOW))
@@ -76,7 +76,7 @@ if option == 1 or option == 2:
         Injector(cover_image, INTER_REP_NAME)
         
         polyglot = input(
-        colorize("Use wrapper for evading compression? (y/n)",Color.YELLOW)
+        colorize("Use wrapper for evading compression in social media? (y/n)",Color.YELLOW)
                  )
 
         if polyglot.lower() == "y":

@@ -4,10 +4,12 @@
 import zipfile
 import os
 from cryptography.fernet import Fernet, InvalidToken
-from hashlib import md5
+from hashlib import sha256
 ##from time import strftime
 from base64 import urlsafe_b64encode
 from pkg.config import TrailingMarker, INTER_REP_NAME, DEF_OUTPUT_NAME, KEEP_SOURCE_COPY
+
+from pkg.errors import UnsupportedExtension, OutputPathError
 
 
 class Authentication:
@@ -23,7 +25,7 @@ class Authentication:
 
     def get_hash(self):
         return urlsafe_b64encode(
-                md5(
+                sha256(
                     self.password.encode()
                     ).hexdigest().encode()
                 )
@@ -105,7 +107,7 @@ class Unlocker:
     def unlock(self):
         fernet = Fernet(self.key)
         if not os.path.exists(self.output_path):
-            raise FileNotFoundError
+            raise OutputPathError("Output path not found!")
 
         for file in os.listdir(self.output_path):
             try:
@@ -154,7 +156,7 @@ class Injector:
             extension = self.container.split(".")[-1]
             if extension in self.allowed_file_type:
                 return extension
-            return False
+            raise UnsupportedContainer("Unsupported container image")
         return None
 
     def inject_to_jpeg(self):
