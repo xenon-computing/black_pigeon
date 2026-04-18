@@ -53,6 +53,7 @@ This script was mostly developed using python standard library. Which come in-bu
 - `os`
 - `sys`
 - `subprocess`
+- `time`
 
 
 # 📒 Supported Files
