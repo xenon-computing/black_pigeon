@@ -10,15 +10,18 @@
 
 __*Black Pigeon*__ is a simple Python tool , responsible for hiding various types of data into __PNG__ or __JPEG__ after the EOI marker of the image file to ensure security and privacy.
 
-__It is a educational project to understand how EOI steganography works under the hood. For more robust security use LSB steganography__
+__It is a educational project to understand how EOI steganography works under the hood. For more robust security use LSB steganography. We are currently trying to implement more steganographic methods besides EOI__.
 
 # ❓Why this script?
 
 __Black Pigeon__ is my first ever github repository as well as a scripted journey to the world of cybersecurity without a formal degree in CS. As a high-school student(when I developed the script first) , I tried to document my journey. In a 4GB of RAM old laptop, I entered to the beautiful world of coding and it was my first public project in GitHub.
 
-I know , it seems that  __Black Pigeon__ did not entirely follow industry standard best practices but eventually it is my personal project for learning.
+I know , it seems that  __Black Pigeon__ did not entirely follow industry standard best practices but eventually it is my personal project for learning. I hope one day __Black Pigeon__ will be the gold standard and go to choice for  security through obscurity with our community collaboration.
 
-__Any good advice and guideline will be accepted to improve or extend the project.__
+__Any good advice , guideline and collaboration will be accepted to improve or extend the project.__
+
+# 🤝 How to contribute?
+If you want to contribute to _Black Pigeon_ to improve it or add new features for enterprise grade security, please check the __issues__ tab and begin to work with your choice. For personal inquiries and collaboration feel free to reach out via [Email](mailto:"mdshadiqulislam2007@gmail.com") as I am not currently active in social-media.
 
 # ⚙️ How does it work?
 
@@ -44,7 +47,7 @@ Modern image parsers don't read image files after the specific EOI marker. There
 Make sure __Python3__ is installed on your system to use this tool.
 
 # 🛠️ Dependencies
-This script was mostly developed using python standard library. Which come in-built with python. Besides a popular third-party library called `cryptography` used for advanced security through symmetric encryption with `Fernet` class of the module.
+This script was mostly developed using python standard library. Which come in-built with python. Besides some popular third-party libraries are used.
 
 - `cryptography`(Third-party)
 - `zipfile`
@@ -117,6 +120,6 @@ chmod +x main.py
 
 # 🚫 Warnings
 - All types of path mentioned earlier have to be absolute, not relative
-- Don't try to hide larger file(s), if your system don't have enough RAM, as currently we are using RAM to load and process file(s) for obscuration.
+- Don't try to hide larger file(s), if your system doesn't have enough RAM, as currently we are using RAM to load and process file(s) for obscuration.
 - Use the tool at your own risk in an isolated environment.
 
